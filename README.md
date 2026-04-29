@@ -8,6 +8,16 @@ Automação de testes de API e Web desenvolvida como trabalho prático da discip
 - **Web:** Python, Selenium, Pytest, Page Object Model
 - **CI/CD:** GitHub Actions
 
+## Estrutura do Projeto
+projeto-qa-automacao/
+├── api-tests/
+│   └── petstore_collection.json
+├── web-tests/
+│   ├── pages/
+│   ├── tests/
+│   └── requirements.txt
+└── .github/workflows/
+
 ## Como Executar Localmente
 
 ### Testes de API
@@ -35,5 +45,5 @@ pytest tests/ -v
 
 ### Web — SauceDemo
 - Login com credenciais válidas
-- Login com credenciais inválidas
-- Fluxo E2E: login → produto → checkout → confirmação
+- Login com credenciais inválidas (validação de erro)
+- Fluxo E2E completo: login → adicionar produto → checkout → confirmação
