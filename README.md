@@ -10,12 +10,19 @@ Automação de testes de API e Web desenvolvida como trabalho prático da discip
 
 ## Estrutura do Projeto
 projeto-qa-automacao/
+
 ├── api-tests/
+
 │   └── petstore_collection.json
+
 ├── web-tests/
+
 │   ├── pages/
+
 │   ├── tests/
+
 │   └── requirements.txt
+
 └── .github/workflows/
 
 ## Como Executar Localmente
