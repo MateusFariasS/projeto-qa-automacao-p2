@@ -13,7 +13,7 @@ projeto-qa-automacao/
 
 ├── api-tests/
 
-│   └── petstore_collection.json
+│   └── Petstore-QA.postman_collection.json
 
 ├── web-tests/
 
@@ -30,7 +30,7 @@ projeto-qa-automacao/
 ### Testes de API
 ```bash
 npm install -g newman
-newman run api-tests/petstore_collection.json --reporters cli
+newman run api-tests/Petstore-QA.postman_collection.json --reporters cli
 ```
 
 ### Testes Web
