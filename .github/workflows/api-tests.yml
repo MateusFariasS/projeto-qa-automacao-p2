@@ -23,4 +23,4 @@ jobs:
         run: npm install -g newman
 
       - name: Executar testes da Petstore
-        run: newman run api-tests/petstore_collection.json --reporters cli
+        run: newman run api-tests/Petstore-QA.postman_collection.json --reporters cli
