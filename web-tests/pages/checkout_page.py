@@ -1,7 +1,6 @@
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 
-
 class CheckoutPage(BasePage):
     CAMPO_NOME = (By.ID, "first-name")
     CAMPO_SOBRENOME = (By.ID, "last-name")
@@ -11,7 +10,10 @@ class CheckoutPage(BasePage):
     MENSAGEM_SUCESSO = (By.CLASS_NAME, "complete-header")
 
     def preencher_dados(self, nome, sobrenome, cep):
-        self.type(self.CAMPO_NOME, nome)
+        
+        campo_nome = self.find(self.CAMPO_NOME)
+        campo_nome.clear()
+        campo_nome.send_keys(nome)
         self.type(self.CAMPO_SOBRENOME, sobrenome)
         self.type(self.CAMPO_CEP, cep)
         self.click(self.BTN_CONTINUAR)
