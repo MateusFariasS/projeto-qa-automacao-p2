@@ -13,7 +13,6 @@ class InventoryPage(BasePage):
 
     def adicionar_produto_ao_carrinho(self):
         self.click(self.BTN_ADD_PRODUTO)
-        # Espera o badge do carrinho aparecer confirmando que o produto foi adicionado
         self.wait.until(EC.presence_of_element_located(self.BADGE_CARRINHO))
 
     def ir_para_carrinho(self):
