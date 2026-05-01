@@ -15,6 +15,7 @@ def driver():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
 
+
     navegador = webdriver.Chrome(options=options)
     yield navegador
     navegador.quit()

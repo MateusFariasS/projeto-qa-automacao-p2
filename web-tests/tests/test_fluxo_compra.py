@@ -41,7 +41,7 @@ def test_fluxo_completo_de_compra(driver, credenciais):
     carrinho.ir_para_checkout()
 
     checkout = CheckoutPage(driver)
-    checkout.preencher_dados("Estudante", "QA", "60000-000")
+    checkout.preencher_dados("Estudante", "QA", "60000000")
     checkout.finalizar_compra()
 
-    assert checkout.obter_mensagem_sucesso() == "Obrigado, pedido realizado com sucesso!"
+    assert checkout.obter_mensagem_sucesso() == "Thank you for your order!"
