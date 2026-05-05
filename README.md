@@ -1,5 +1,6 @@
 # 🧪 Projeto QA — Automação de Testes
 > Trabalho prático da disciplina de Teste e Qualidade de Software — ICEV
+
 > Desenvolvido por: Mateus Farias
 
 ---
