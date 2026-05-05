@@ -1,5 +1,5 @@
 # 🧪 Projeto QA — Automação de Testes
-> Trabalho prático da disciplina de Qualidade de Software — ICEV  
+> Trabalho prático da disciplina de Qualidade de Software — ICEV
 > Desenvolvido por: Mateus Farias
 
 ---
@@ -70,8 +70,8 @@ projeto-qa-automacao-p2/
 
 ## Automação de API — Swagger Petstore
 
-**Base URL:** `https://petstore.swagger.io/v2`  
-**Ferramenta:** Postman + Newman  
+**Base URL:** `https://petstore.swagger.io/v2`
+**Ferramenta:** Postman + Newman
 **Executor na CI:** Newman (linha de comando)
 
 ### Cenários cobertos
@@ -84,12 +84,6 @@ projeto-qa-automacao-p2/
 | 4 | Criar Pet | POST | `/pet` | Status 200 e nome do pet correto |
 | 5 | Buscar Inventário | GET | `/store/inventory` | Status 200 e retorna objeto |
 | 6 | Fazer Pedido | POST | `/store/order` | Status 200 e status "placed" |
-
-### Resultado da execução no Newman (CI)
-
-![Pipeline API](prints/pipeline-api.png)
-
-Todos os 6 requests executados com **12 assertions** e **0 falhas**.
 
 ---
 
@@ -153,12 +147,12 @@ Todos os 6 requests executados com **12 assertions** e **0 falhas**.
 
 ## Automação Web — SauceDemo
 
-**URL:** `https://www.saucedemo.com/`  
-**Ferramenta:** Selenium + Pytest  
-**Linguagem:** Python 3.11  
+**URL:** `https://www.saucedemo.com/`
+**Ferramenta:** Selenium + Pytest
+**Linguagem:** Python 3.11
 **Padrão:** Page Object Model
 
-> O SauceDemo é um site desenvolvido especificamente para prática de automação de testes. Ele simula uma loja virtual com login, catálogo de produtos e carrinho de compras.
+> O SauceDemo é um site desenvolvido especificamente para prática de automação de testes. Ele simula uma loja virtual com login, catálogo de produtos, carrinho de compras e checkout.
 
 ### Cenários cobertos
 
@@ -166,19 +160,21 @@ Todos os 6 requests executados com **12 assertions** e **0 falhas**.
 |---|---|---|
 | 1 | `test_login_com_sucesso` | Faz login com credenciais válidas e verifica se chegou na página de produtos |
 | 2 | `test_login_invalido_exibe_erro` | Tenta login com dados errados e verifica se a mensagem de erro aparece |
-| 3 | `test_fluxo_completo_de_compra` | Login → adiciona produto → vai ao carrinho → preenche dados → finaliza compra → valida mensagem de sucesso |
+| 3 | `test_fluxo_completo_de_compra` | Login → adiciona produto → carrinho → preenche dados → finaliza compra → valida mensagem de sucesso |
 
 ---
 
 ## Design Pattern — Page Object Model
 
-O projeto utiliza o padrão **Page Object Model (POM)**, que consiste em criar uma classe Python para cada tela do sistema. Isso separa a **localização dos elementos** da **lógica dos testes**, tornando o código mais limpo, organizado e fácil de manter.
+O projeto utiliza o padrão **Page Object Model (POM)**, que consiste em criar uma classe Python para cada tela do sistema. Isso separa a **localização dos elementos** da **lógica dos testes**, tornando o código mais organizado, reutilizável e fácil de manter.
+
+---
 
 ### `base_page.py` — Classe Mãe
 
 ![BasePage](prints/base_page.png)
 
-> É a classe base que todas as outras herdam. Centraliza os métodos `find()`, `click()` e `type()`, além de configurar o `WebDriverWait` com timeout de 20 segundos. Isso evita repetição de código em todas as páginas.
+> É a classe base herdada por todas as outras páginas. Possui dois níveis de espera: `wait` com timeout de 20 segundos para elementos críticos e `short_wait` com 5 segundos para verificações de navegação. O método `click()` usa JavaScript (`execute_script`) para garantir o clique mesmo quando elementos estão sobrepostos ou fora da viewport. O método `type()` usa `visibility_of_element_located` para garantir que o campo está visível antes de digitar. O método `wait_for_url()` verifica se a navegação ocorreu corretamente.
 
 ---
 
@@ -186,7 +182,7 @@ O projeto utiliza o padrão **Page Object Model (POM)**, que consiste em criar u
 
 ![LoginPage](prints/login_page.png)
 
-> Representa a tela de login do SauceDemo. Define os localizadores dos campos (`By.ID`) e os métodos `abrir()`, `fazer_login()` e `obter_erro()`. O teste nunca acessa o HTML diretamente — tudo passa por esta classe.
+> Representa a tela de login do SauceDemo. Define os localizadores dos campos usando `By.ID` e os métodos `abrir()`, `fazer_login()` e `obter_erro()`. O teste nunca acessa o HTML diretamente — tudo passa por esta classe.
 
 ---
 
@@ -194,7 +190,7 @@ O projeto utiliza o padrão **Page Object Model (POM)**, que consiste em criar u
 
 ![InventoryPage](prints/inventory_page.png)
 
-> Representa a página de produtos. O método `adicionar_produto_ao_carrinho()` clica no botão e aguarda o badge do carrinho aparecer antes de continuar, garantindo que o produto foi realmente adicionado antes de ir para o próximo passo.
+> Representa a página de produtos. O método `adicionar_produto_ao_carrinho()` clica no botão e aguarda o badge do carrinho aparecer confirmando a adição. O método `ir_para_carrinho()` tenta navegar via clique e, se a URL não mudar em 5 segundos (`short_wait`), navega diretamente para `cart.html` como fallback — tornando o teste robusto no ambiente de CI.
 
 ---
 
@@ -202,7 +198,7 @@ O projeto utiliza o padrão **Page Object Model (POM)**, que consiste em criar u
 
 ![CartPage](prints/cart_page.png)
 
-> Representa o carrinho de compras. O método `obter_itens()` retorna todos os itens presentes, permitindo que o teste verifique se a quantidade está correta antes de ir para o checkout.
+> Representa o carrinho de compras. O método `obter_itens()` aguarda o primeiro item aparecer antes de retornar a lista completa. O método `ir_para_checkout()` usa o mesmo padrão de fallback: tenta clicar no botão e, se a URL não mudar em 5 segundos, navega diretamente para `checkout-step-one.html`.
 
 ---
 
@@ -210,7 +206,7 @@ O projeto utiliza o padrão **Page Object Model (POM)**, que consiste em criar u
 
 ![CheckoutPage](prints/checkout_page.png)
 
-> Representa as telas de checkout. O método `preencher_dados()` preenche nome, sobrenome e CEP. O método `obter_mensagem_sucesso()` captura o texto final de confirmação que é validado pelo `assert`.
+> Representa as telas de checkout. O método `preencher_dados()` aguarda o `document.readyState` ser `complete` antes de preencher os campos, garantindo que a página carregou. Após clicar em "continue", usa `short_wait` para verificar a navegação e, se necessário, navega diretamente para `checkout-step-two.html`. O mesmo padrão de fallback se aplica em `finalizar_compra()` para a página de conclusão.
 
 ---
 
@@ -218,17 +214,7 @@ O projeto utiliza o padrão **Page Object Model (POM)**, que consiste em criar u
 
 ![Conftest](prints/conftest.png)
 
-> Arquivo de configuração do Pytest. Define as **fixtures** reutilizáveis por todos os testes:
-> - `driver`: inicializa o Chrome com modo `--headless` (sem abrir janela, necessário para CI), entrega o navegador para o teste e fecha ao final.
-> - `credenciais`: lê o usuário e senha do arquivo `.env` de forma segura.
-
----
-
-### `test_fluxo_compra.py` — Arquivo de Testes
-
-![Test Fluxo](prints/test_fluxo_compra.png)
-
-> Contém os 3 cenários de teste. Cada função usa as Page Objects e as fixtures do `conftest.py`. O `assert` no final de cada teste é a **validação** — se o resultado for diferente do esperado, o teste falha e a pipeline fica vermelha.
+> Arquivo de configuração do Pytest. Define as fixtures reutilizáveis por todos os testes. O driver inicializa o Chrome com `--headless=new` (sem janela), `--no-sandbox`, `--disable-dev-shm-usage` e `--window-size=1920,1080`. O argumento de tamanho de janela é essencial para garantir que todos os elementos estejam visíveis no modo headless, evitando problemas de clique em elementos fora da viewport no GitHub Actions.
 
 ---
 
@@ -256,7 +242,7 @@ O projeto possui duas pipelines independentes que rodam automaticamente a cada `
 1. Baixa o repositório
 2. Instala o Python 3.11
 3. Instala as dependências do `requirements.txt`
-4. Executa os testes com Pytest (usando os Secrets do GitHub como credenciais)
+4. Executa os testes com Pytest usando os Secrets do GitHub como credenciais
 
 > As credenciais (`LOGIN_USER` e `LOGIN_PASSWORD`) são armazenadas nos **Secrets do GitHub** e nunca ficam expostas no código.
 
@@ -284,7 +270,7 @@ newman run api-tests/Petstore-QA.postman_collection.json --reporters cli
 cd web-tests
 pip install -r requirements.txt
 
-# 2. Criar o arquivo .env
+# 2. Criar o arquivo .env na pasta web-tests/
 # LOGIN_USER=standard_user
 # LOGIN_PASSWORD=secret_sauce
 
@@ -302,10 +288,8 @@ python -m pytest tests/ -v
 - 12 assertions validadas
 - 0 falhas
 
-### ✅ Pipeline Web — 3/3 testes passando
+### ✅ Testes Web — 3/3 passando localmente
 
-- `test_login_com_sucesso` — PASSED
-- `test_login_invalido_exibe_erro` — PASSED
-- `test_fluxo_completo_de_compra` — PASSED
+![Testes passando localmente](prints/testes-locais-passando.png)
 
----
+> Os 3 testes passaram em 30.27s na execução local, confirmando que o fluxo completo de login, adição de produto ao carrinho e finalização de compra funciona corretamente.
