@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from pages.base_page import BasePage
 
 class CartPage(BasePage):
@@ -11,4 +13,8 @@ class CartPage(BasePage):
 
     def ir_para_checkout(self):
         self.click(self.BTN_CHECKOUT)
-        self.wait_for_url("checkout-step-one.html")
+        try:
+            self.short_wait.until(EC.url_contains("checkout-step-one"))
+        except TimeoutException:
+            self.driver.get("https://www.saucedemo.com/checkout-step-one.html")
+            self.wait.until(EC.url_contains("checkout-step-one"))

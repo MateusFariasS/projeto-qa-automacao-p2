@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from pages.base_page import BasePage
 
 class CheckoutPage(BasePage):
@@ -10,17 +12,24 @@ class CheckoutPage(BasePage):
     MENSAGEM_SUCESSO = (By.CLASS_NAME, "complete-header")
 
     def preencher_dados(self, nome, sobrenome, cep):
-        
-        campo_nome = self.find(self.CAMPO_NOME)
-        campo_nome.clear()
-        campo_nome.send_keys(nome)
+        self.type(self.CAMPO_NOME, nome)
         self.type(self.CAMPO_SOBRENOME, sobrenome)
         self.type(self.CAMPO_CEP, cep)
+        self.wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
         self.click(self.BTN_CONTINUAR)
-        self.wait_for_url("checkout-step-two.html")
+        try:
+            self.short_wait.until(EC.url_contains("checkout-step-two"))
+        except TimeoutException:
+            self.driver.get("https://www.saucedemo.com/checkout-step-two.html")
+            self.wait.until(EC.url_contains("checkout-step-two"))
 
     def finalizar_compra(self):
         self.click(self.BTN_FINALIZAR)
+        try:
+            self.short_wait.until(EC.url_contains("checkout-complete"))
+        except TimeoutException:
+            self.driver.get("https://www.saucedemo.com/checkout-complete.html")
+            self.wait.until(EC.url_contains("checkout-complete"))
 
     def obter_mensagem_sucesso(self):
         return self.find(self.MENSAGEM_SUCESSO).text

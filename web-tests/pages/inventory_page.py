@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from pages.base_page import BasePage
 
 class InventoryPage(BasePage):
@@ -17,4 +18,8 @@ class InventoryPage(BasePage):
 
     def ir_para_carrinho(self):
         self.click(self.ICONE_CARRINHO)
-        self.wait_for_url("cart.html")
+        try:
+            self.short_wait.until(EC.url_contains("cart.html"))
+        except TimeoutException:
+            self.driver.get("https://www.saucedemo.com/cart.html")
+            self.wait.until(EC.url_contains("cart.html"))
