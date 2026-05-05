@@ -17,3 +17,4 @@ class InventoryPage(BasePage):
 
     def ir_para_carrinho(self):
         self.click(self.ICONE_CARRINHO)
+        self.wait_for_url("cart.html")

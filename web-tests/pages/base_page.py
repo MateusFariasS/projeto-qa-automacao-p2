@@ -14,3 +14,6 @@ class BasePage:
 
     def type(self, locator, text):
         self.find(locator).send_keys(text)
+
+    def wait_for_url(self, fragment):
+        self.wait.until(EC.url_contains(fragment))

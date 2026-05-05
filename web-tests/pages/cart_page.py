@@ -6,7 +6,9 @@ class CartPage(BasePage):
     BTN_CHECKOUT = (By.ID, "checkout")
 
     def obter_itens(self):
+        self.find(self.ITEM_NO_CARRINHO)
         return self.driver.find_elements(*self.ITEM_NO_CARRINHO)
 
     def ir_para_checkout(self):
         self.click(self.BTN_CHECKOUT)
+        self.wait_for_url("checkout-step-one.html")

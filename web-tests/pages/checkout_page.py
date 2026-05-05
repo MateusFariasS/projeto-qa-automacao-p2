@@ -17,6 +17,7 @@ class CheckoutPage(BasePage):
         self.type(self.CAMPO_SOBRENOME, sobrenome)
         self.type(self.CAMPO_CEP, cep)
         self.click(self.BTN_CONTINUAR)
+        self.wait_for_url("checkout-step-two.html")
 
     def finalizar_compra(self):
         self.click(self.BTN_FINALIZAR)
