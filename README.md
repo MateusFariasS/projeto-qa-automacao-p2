@@ -71,7 +71,9 @@ projeto-qa-automacao-p2/
 ## Automação de API — Swagger Petstore
 
 **Base URL:** `https://petstore.swagger.io/v2`
+
 **Ferramenta:** Postman + Newman
+
 **Executor na CI:** Newman (linha de comando)
 
 ### Cenários cobertos
@@ -148,8 +150,11 @@ projeto-qa-automacao-p2/
 ## Automação Web — SauceDemo
 
 **URL:** `https://www.saucedemo.com/`
+
 **Ferramenta:** Selenium + Pytest
+
 **Linguagem:** Python 3.11
+
 **Padrão:** Page Object Model
 
 > O SauceDemo é um site desenvolvido especificamente para prática de automação de testes. Ele simula uma loja virtual com login, catálogo de produtos, carrinho de compras e checkout.
@@ -293,3 +298,4 @@ python -m pytest tests/ -v
 ![Testes passando localmente](prints/testes-locais-passando.png)
 
 > Os 3 testes passaram em 30.27s na execução local, confirmando que o fluxo completo de login, adição de produto ao carrinho e finalização de compra funciona corretamente.
+
