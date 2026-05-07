@@ -1,5 +1,5 @@
 # 🧪 Projeto QA — Automação de Testes
-> Trabalho prático da disciplina de Teste e Qualidade de Software — ICEV
+> Trabalho prático da disciplina de Qualidade de Software — ICEV
 
 > Desenvolvido por: Mateus Farias
 
@@ -224,6 +224,14 @@ O projeto utiliza o padrão **Page Object Model (POM)**, que consiste em criar u
 
 ---
 
+### `test_fluxo_compra.py` — Arquivo de Testes
+
+![Test Fluxo](prints/test_fluxo_compra.png)
+
+> Contém os 3 cenários de teste. Cada função recebe as fixtures `driver` e `credenciais` do `conftest.py` automaticamente. O `assert` no final de cada teste é a **validação** — se o resultado for diferente do esperado, o teste falha e a pipeline fica vermelha. O fluxo completo cobre: login → adicionar produto → verificar carrinho com 1 item → preencher dados de entrega → finalizar compra → validar mensagem `"Thank you for your order!"`.
+
+---
+
 ## CI/CD — GitHub Actions
 
 O projeto possui duas pipelines independentes que rodam automaticamente a cada `git push` na branch `main`.
@@ -299,4 +307,6 @@ python -m pytest tests/ -v
 ![Testes passando localmente](prints/testes-locais-passando.png)
 
 > Os 3 testes passaram em 30.27s na execução local, confirmando que o fluxo completo de login, adição de produto ao carrinho e finalização de compra funciona corretamente.
+
+---
 
